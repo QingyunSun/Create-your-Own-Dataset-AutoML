@@ -1,4 +1,4 @@
-from agent import create_agent
+from agent import create_agent, get_pickle_files, get_text
 import chainlit as cl
 
 agent_chain = create_agent()
@@ -13,14 +13,18 @@ agent_chain = create_agent()
 #     input_str = texts[0]
 #     res = await cl.make_async(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
 #     await cl.Message(content=res["output"]).send()
+
+pickle_dict = get_pickle_files('./data')
+print("loaded the pickle dict: ", pickle_dict)
     
 @cl.on_message
 async def main(message: str):
+    print(message)
     # Your custom logic goes here...
-
+    filename, section = message.split(' ')
+    print("filename session: ", filename, section)
     # Send a response back to the user
-    from agent import texts
-    filing_content = texts[0]
+    filing_content = get_text(pickle_dict, filename, section)
     output = agent_chain.run(filing_content)
 
     await cl.Message(

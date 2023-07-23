@@ -41,9 +41,10 @@ text_splitter = RecursiveCharacterTextSplitter(
     add_start_index = True,
 )
 
-texts = text_splitter.create_documents([pickle_dict['8.pkl'].iloc[0]['section8']])
+def get_text(pickle_dict, filename, section):
 # print(texts[0])
 # print(texts[1])
+    return text_splitter.create_documents([pickle_dict[filename].iloc[0][section]])
 
 
 
